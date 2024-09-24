@@ -27,7 +27,7 @@ const Cart = () => {
         <div className="row">
           {cartItems.map((item) => (
             <div key={item.id} className="col-md-3 mb-4">
-              <div className="card h-80">
+              <div className="card custom-card h-80">
                 <img
                   src={item.image}
                   className="card-img-top"
@@ -39,14 +39,14 @@ const Cart = () => {
                   <p className="card-text">${item.price}</p>
                   <div className="input-group mb-3">
                     <button
-                      className="btn btn-outline-secondary"
+                      className="btn btn-primary"
                       onClick={() => handleDecreaseQuantity(item.id)}
                     >
                       -
                     </button>
                     <span className="form-control text-center">{item.quantity}</span>
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn btn-primary"
                       onClick={() => handleIncreaseQuantity(item.id)}
                     >
                       +
@@ -54,7 +54,7 @@ const Cart = () => {
                   </div>
                   <p>Total: ${(item.price * item.quantity).toFixed(2)}</p>
                   <button
-                    className="btn btn-danger"
+                    className="btn btn-primary"
                     onClick={() => handleRemoveFromCart(item.id)}
                   >
                     Remove from Cart
