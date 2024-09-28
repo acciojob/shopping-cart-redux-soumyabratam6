@@ -1,46 +1,39 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, removeFromWishlist } from '../redux/actions/wishlistActions';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import CardWishlist from './CardWishlist';
+import { addToCart } from '../actions';
 
-const Wishlist = () => {
-    const wishlistItems = useSelector(state => state.wishlist.items || []);
-    const dispatch = useDispatch();
-
-    // const handleAddToWishlist = () => {
-    //     // Update to include an image in the item object
-    //     const item = { id: Math.random(), name: 'Wishlist Item', price: 50, image: 'https://via.placeholder.com/150' };
-    //     dispatch(addToWishlist(item));
-    // };
-
-    const handleRemoveFromWishlist = (id) => {
-        dispatch(removeFromWishlist(id));
-    };
-
-    return (
-        <div className="container mt-4">
-            <h2 className="mb-3">Wishlist</h2>
-            {/* <button className="btn btn-primary mb-3" onClick={handleAddToWishlist}>Add to Wishlist</button> */}
-            <div className="row">
-                {wishlistItems.length === 0 ? (
-                    <p>No items in wishlist.</p>
-                ) : (
-                    wishlistItems.map(item => (
-                        <div className="col-md-3 mb-3" key={item.id}>
-                            <div className="card">
-                                <img src={item.image} className="card-img-top" alt={item.name} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-                                <div className="card-body">
-                                    <h5 className="card-title">{item.name}</h5>
-                                    <p className="card-text">${item.price}</p>
-                                    <button className="btn btn-danger" onClick={() => handleRemoveFromWishlist(item.id)}>Remove</button>
-                                </div>
+class Wishlist extends Component {
+    render() {
+        const { wishlists, addToCart } = this.props
+        return (
+            <div className="container mt-5">
+                <h3>Wishlists</h3>
+                <p className="text-muted">All Your Favorite Products</p>
+                <div className="row mt-3">
+                    {
+                        wishlists.length > 0 ? wishlists.map(wishlist => (
+                            <div className="col-md-3">
+                                <CardWishlist key={wishlist.id} wishlist={wishlist} addToCart={addToCart} />
                             </div>
-                        </div>
-                    ))
-                )}
+                        )) : <p className="text-center mx-auto">Your wishlist is empty</p>
+                    }
+                </div>
             </div>
-        </div>
-    );
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        wishlists: state.wishlists
+    };
 };
 
-export default Wishlist;
+function mapDispatchToProps(dispatch) {
+    return ({
+        addToCart: (product) => dispatch(addToCart(product)),
+    })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Wishlist)
